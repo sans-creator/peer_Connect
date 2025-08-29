@@ -183,7 +183,7 @@ export default function Landing() {
               avatar={AV(
                 "AB6AXuC7KCK7pP_Au3EQoyO17V84czbmuqIUaMcAwrQuCcv2FRzBtnc9u_U8DgBCKHKKtBM4EvvK1Q1KuZwFBitWFMBASdgHaW6jtUVoMjP38_kZW_r4ra3u_DluWhXLsYlfAjZQarXq1du-cuuxyQ8vmVthjCg1AB16pi_ZkfKcwjBnsblkqvJ5m--7I7uG0281iNM3nkFysBYXi_5oHBfQrrFQJeWfXCpiptPNoPGm0X8oBhqDW_zpgidZrJcHku5FWtJYnSHpQLep8aNP"
               )}
-              name="Sanskar"
+              name="Sansa"
               quote="PeerConnect transformed my study habits."
             />
             <TestimonialCard
