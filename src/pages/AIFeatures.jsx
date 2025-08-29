@@ -2,6 +2,7 @@
 import { UsersRound, FileText, Bot, Medal } from "lucide-react";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 /** Optional mini-demo that calls Gemini when VITE_GEMINI_API_KEY is set */
 function FlashcardDemo() {
@@ -21,9 +22,9 @@ function FlashcardDemo() {
     }
     try {
       setLoading(true);
-      // Minimal REST call to Gemini 1.5 Flash (safe & short)
       const resp = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+          apiKey,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -33,8 +34,8 @@ function FlashcardDemo() {
                 parts: [
                   {
                     text:
-                      "From the following tutoring notes, generate 5 concise Q&A flashcards " +
-                      "as JSON: [{\"q\":\"...\",\"a\":\"...\"}]. Notes:\n\n" +
+                      'From the following tutoring notes, generate 5 concise Q&A flashcards ' +
+                      'as JSON: [{"q":"...","a":"..."}]. Notes:\n\n' +
                       text,
                   },
                 ],
@@ -45,7 +46,6 @@ function FlashcardDemo() {
       );
       const data = await resp.json();
       const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-      // try to parse first JSON block in the model output
       const match = raw.match(/\[[\s\S]*\]/);
       const parsed = match ? JSON.parse(match[0]) : [];
       setCards(parsed.slice(0, 5));
@@ -62,7 +62,7 @@ function FlashcardDemo() {
     <div className="card p-6">
       <h3 className="text-lg font-bold text-[#111827]">Try: Summarize → Flashcards</h3>
       <p className="muted mb-3 text-sm">
-        Paste a short session summary. If a Gemini key is set, we’ll generate 5 flashcards.
+        Paste a short session summary. 
       </p>
       <textarea
         className="w-full rounded-md border border-[#E5E7EB] p-3 text-sm outline-none focus:ring-2 focus:ring-black"
@@ -72,11 +72,7 @@ function FlashcardDemo() {
         onChange={(e) => setText(e.target.value)}
       />
       <div className="mt-3 flex items-center gap-3">
-        <button
-          onClick={generate}
-          className="btn-primary"
-          disabled={loading}
-        >
+        <button onClick={generate} className="btn-primary" disabled={loading}>
           {loading ? "Generating…" : "Generate Flashcards"}
         </button>
         {!import.meta.env.VITE_GEMINI_API_KEY && (
@@ -101,7 +97,15 @@ function FlashcardDemo() {
 }
 
 export default function AIFeatures() {
-  const onTry = () => toast.success("Launching AI demo…");
+  const navigate = useNavigate();
+
+  // Navigate to FindTutor with auto match. You can prefill subject/level here.
+  const goToAutoMatch = () => {
+    navigate(
+      `/find-tutor?subject=Calculus&level=College&auto=1`
+      // date/time omitted on purpose — FindTutor will default to next full hour in auto mode
+    );
+  };
 
   return (
     <main className="flex-1">
@@ -171,49 +175,15 @@ export default function AIFeatures() {
             See AI in Action
           </h2>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
-            <div className="flex flex-col">
-              <h3 className="mb-4 text-center text-xl font-bold text-[#111827]">AI Tutor Matching</h3>
-              <div className="overflow-hidden rounded-lg border border-[#E5E7EB] shadow-sm">
-                <div
-                  className="h-64 w-full bg-cover bg-center"
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMs5junzZjyIsgAi43E-36uwot_WsyatG-1rfGw9-xCJyUb332WzPy6XRVroqS7TqJiDvpc3tPd9LNAgW_ZxUgjc2DS8ivAmU_n0pCN0C9jOOq4rXian3TlXFJsL86m9352Md-LmebtjantJL5mHuRt1A48cNS-vE0tfbxFGsspIezmik8mNJEZboTxiFoY3L19kNLNkO4Fyc80phBK8EEgFUnR_NQW3kBbc7WF5uy8fvX4Bq5neA_svQsb6lWLswBTUzH7CzzJGNF")',
-                  }}
-                />
-              </div>
-              <p className="mt-4 text-center text-[#6B7280]">
-                Find the perfect tutor in seconds with our intelligent matching algorithm.
-              </p>
-            </div>
-
-            <div className="flex flex-col">
-              <h3 className="mb-4 text-center text-xl font-bold text-[#111827]">AI Chat Assistant</h3>
-              <div className="overflow-hidden rounded-lg border border-[#E5E7EB] shadow-sm">
-                <div
-                  className="h-64 w-full bg-cover bg-center"
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMs5junzZjyIsgAi43E-36uwot_WsyatG-1rfGw9-xCJyUb332WzPy6XRVroqS7TqJiDvpc3tPd9LNAgW_ZxUgjc2DS8ivAmU_n0pCN0C9jOOq4rXian3TlXFJsL86m9352Md-LmebtjantJL5mHuRt1A48cNS-vE0tfbxFGsspIezmik8mNJEZboTxiFoY3L19kNLNkO4Fyc80phBK8EEgFUnR_NQW3kBbc7WF5uy8fvX4Bq5neA_svQsb6lWLswBTUzH7CzzJGNF")',
-                  }}
-                />
-              </div>
-              <p className="mt-4 text-center text-[#6B7280]">
-                Get instant help anytime, anywhere with your 24/7 AI-powered study buddy.
-              </p>
-            </div>
-          </div>
-
-          {/* Optional live demo with Gemini */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
             <FlashcardDemo />
+
             <div className="card p-6 flex flex-col items-center justify-center text-center">
               <h3 className="text-lg font-bold text-[#111827]">Try AI-Powered Tutoring</h3>
               <p className="muted mt-2 max-w-sm">
-                This button just triggers a toast for now; wire it to your flow or modal later.
+                Click the button to jump straight into the auto-match flow with a prefilled subject.
               </p>
-              <button onClick={() => toast.success("Opening AI flow…")} className="mt-4 btn-primary">
+              <button onClick={goToAutoMatch} className="mt-4 btn-primary">
                 Try AI-Powered Tutoring
               </button>
             </div>
@@ -229,7 +199,10 @@ export default function AIFeatures() {
             Join PeerConnect today and experience a smarter way to learn.
           </p>
           <div className="mt-8">
-            <button onClick={onTry} className="inline-block rounded-md bg-black px-8 py-3 text-base font-medium text-white shadow-lg transition-transform hover:scale-105">
+            <button
+              onClick={goToAutoMatch}
+              className="inline-block rounded-md bg-black px-8 py-3 text-base font-medium text-white shadow-lg transition-transform hover:scale-105"
+            >
               Try AI-Powered Tutoring
             </button>
           </div>

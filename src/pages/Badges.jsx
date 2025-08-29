@@ -14,11 +14,11 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-// Hooks/logic you already created
+// Hooks/logic
 import { useUserData } from "@/lib/useUserData";
 import { computeBadges } from "@/lib/badgeEngine";
 
-// ---- Static UI data ----
+// ---- Static Badge Data ----
 const BADGE_CARDS = [
   {
     id: "explorer",
@@ -39,6 +39,13 @@ const BADGE_CARDS = [
     title: "Star Mentor",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCdnK-3BXaDWK_E05SwpSeZq3ibVwdYxXHLs8VgfZcMrZ1njsi4mcTKsJUX2q0nC6iTYpgLq_JKkRjw1mhy1a7F3sCtiGbLla929cY0WFUpeQ7gYcXBm1M5OQdF5an7MNc5iTt_sZBEtfYStzlMiAtkEZbwxkd8NOotsrQex8A_UdUFLxDBdbo3XXwBcEKfOo38M3X_oMgirIFD6sxbuvuXpMSz6HjhD3zFsmFjy6IfAMtcktJN0eh7vXdehSQKPrP8tQnN9OcUHP4k",
     desc: "5★ rating from 10 students.",
+    Icon: Star,
+  },
+  {
+    id: "premium",
+    title: "Premium Member",
+    img: "https://img.icons8.com/color/96/crown.png",
+    desc: "Awarded for upgrading to Premium.",
     Icon: Star,
   },
 ];
@@ -74,6 +81,7 @@ const ACCORDION = [
   },
 ];
 
+// Leaderboard mock
 const LEADERBOARD = [
   {
     rank: 1,
@@ -96,20 +104,6 @@ const LEADERBOARD = [
       "https://lh3.googleusercontent.com/aida-public/AB6AXuACt1SNUT1rXKe3fddIVuvEYPAL8pGB_ZyBPHz7UdNGeeNKoSZSAXCKAhQ34nGHgUtG01HmUXQ9YESxYtr5C7uecKgzc81HPqPm_V1VKPb4iL7ITurjIQptFXNGDQ1MhRkpspsYsCEXnmufeSQ1K5B6zEy8sKfq262aRR3gEd3-sZry0gh6TYjB3gdaeLO5QbJQ4F3xWk-EZkjg_dPxrq-Q0f62Axl73dMa4eKv5eVQNA8PTH9sokyIoYO_srxY0veYh_27pcSk5M2P",
     badges: ["explorer"],
   },
-  {
-    rank: 4,
-    name: "Noah Wilson",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCBHy8SKQhDKr3KCGxBcxDH1x7FRkl8h5PSOJd89DZOyXWpQ_5YZhCrzTjUvJ7WOlnb6z30MVRTBnGP9T-YyHDrxfviFr3tzjThVxLMy2ttjfxIDdxOr0FiWMW-1dSx7JBUHAx_VUtm6gIeuDFp8xKtW18ZzQt-942R10AqkF53U2ZjYW0T66goIJL0NbK4pHxnC-luxXb1vrentaGIx-VbHAc5Zao_7yb1H_Gdo3RTHX7Lioq8qVTpCC4oM7tMSToxj5i2in4KgnQf",
-    badges: ["explorer"],
-  },
-  {
-    rank: 5,
-    name: "Ava Martinez",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCzAhf8hOQ5FPmCxHMDoXgYSd7tqYhuLTH76VmZI1UV_7lvt-CAVPAz7NYOgp2_q-0i7lcGYPWqMqn4bEak6is7_zWaZp2YHD9ZZBLlBJjccDbYSVW6BQnaVRovlT8CWpNGKGkKESTfqfrN9Ropqp5GW77FcyV8X1T4QumoQtzwcq4na-mJ6t5pXla0ew6FeS6upFO4lCmVcb2fJrqpiJ_h1zCrnjAfF_tdPxi3vvNeb4N7-tH0uUh6ykmS-yEAafXusOnCxWF1C-vM",
-    badges: ["explorer"],
-  },
 ];
 
 // ---- Reusable Progress Bar ----
@@ -125,7 +119,10 @@ const ProgressBar = ({ label, value, total, unit = "Sessions", suffix }) => {
         </p>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-2.5">
-        <div className="bg-[#111827] h-2.5 rounded-full" style={{ width: `${pct}%` }} />
+        <div
+          className="bg-[#111827] h-2.5 rounded-full"
+          style={{ width: `${pct}%` }}
+        />
       </div>
       <p className="text-[#6B7280] text-sm mt-2">
         {remaining > 0
@@ -136,14 +133,12 @@ const ProgressBar = ({ label, value, total, unit = "Sessions", suffix }) => {
   );
 };
 
+// ---- Page ----
 export default function Badges() {
   const navigate = useNavigate();
-  const { loading, stats, error } = useUserData(); // assumes your hook returns {loading, stats, error}
+  const { loading, stats, error, plan } = useUserData();
 
-  // Compute derived progress safely
-  const safeStats = stats ?? {};
-  const { progress = {} } = computeBadges(safeStats) ?? {};
-
+  const { progress = {} } = computeBadges(stats ?? {}) ?? {};
   const [openId, setOpenId] = useState(null);
 
   const onCTA = () => {
@@ -153,62 +148,21 @@ export default function Badges() {
 
   return (
     <div className="bg-white text-[#111827] min-h-screen flex flex-col">
-      {/* Header (replace with your global Navbar if you have one) */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#E5E7EB]">
-        <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-8">
-            <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
-              <School className="h-7 w-7" />
-              PeerConnect
-            </Link>
-            <nav className="hidden md:flex items-center gap-8">
-              <Link className="text-sm text-[#6B7280] hover:text-[#111827]" to="/ai">
-                AI Features
-              </Link>
-              <Link className="text-sm text-[#6B7280] hover:text-[#111827]" to="/pricing">
-                Pricing
-              </Link>
-              <Link className="text-sm text-[#6B7280] hover:text-[#111827]" to="/about">
-                Resources
-              </Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-3">
-            <button className="p-2 rounded-full text-[#6B7280] hover:text-[#111827] hover:bg-gray-100">
-              <Search className="h-5 w-5" />
-            </button>
-            <button className="p-2 rounded-full text-[#6B7280] hover:text-[#111827] hover:bg-gray-100">
-              <Bell className="h-5 w-5" />
-            </button>
-            <div
-              className="bg-center bg-no-repeat bg-cover rounded-full size-10"
-              style={{
-                backgroundImage:
-                  'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUZFxMkdTd0zlggBo4yIgvOOp2MB8-FCUoh62MAVQgC1ryfXPLslIk6wrXFMLhWMCBpdjGwIRvY-Akheu8mf3vYGRv-E-CAgt3W6PisPOWNIJhJjA141C-0tBMUl3TtKua3Q2tWDRkidHuaCx4YYIJxFcPqdY5Q-A-t3OEBcDfxhMGieh3JQsAa1ok3ggjCV3eAfnOJGLnagxyM0o_-V5CiNVPm8YV3LS7Efc7W06MJrGVof0HxOANQGpzJ7Wz4qUr_aEm01yrtuBg")',
-              }}
-            />
-            <button className="md:hidden p-2 rounded-full text-[#6B7280] hover:text-[#111827] hover:bg-gray-100">
-              <Menu className="h-5 w-5" />
-            </button>
-          </div>
+      {/* Hero */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">
+            Learning is fun when rewarded
+          </h1>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-[#6B7280]">
+            Earn badges and climb the leaderboard as you learn and teach on PeerConnect.
+          </p>
         </div>
-      </header>
 
-      <main className="flex-1">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          {/* Hero */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">
-              Learning is fun when rewarded
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-[#6B7280]">
-              Earn badges and climb the leaderboard as you learn and teach on PeerConnect.
-            </p>
-          </div>
-
-          {/* Badge Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
-            {BADGE_CARDS.map(({ id, title, img, desc, Icon }) => (
+        {/* Badge Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16">
+          {BADGE_CARDS.filter((b) => b.id !== "premium" || plan === "Premium").map(
+            ({ id, title, img, desc, Icon }) => (
               <div
                 key={id}
                 className="border border-[#E5E7EB] rounded-lg p-6 text-center flex flex-col items-center shadow-sm hover:shadow-md transition-shadow"
@@ -222,155 +176,127 @@ export default function Badges() {
                 </div>
                 <p className="text-[#6B7280]">{desc}</p>
               </div>
-            ))}
-          </div>
+            )
+          )}
+        </div>
 
-          {/* How to earn (Accordion) */}
-          <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8">How to Earn Badges</h2>
-            <div className="space-y-4">
-              {ACCORDION.map((a) => {
-                const open = openId === a.id;
-                return (
-                  <div key={a.id} className="border border-[#E5E7EB] rounded-lg">
-                    <button
-                      onClick={() => setOpenId(open ? null : a.id)}
-                      className="w-full flex items-center justify-between p-4 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-4 text-left">
-                        <div className="w-16 h-16 flex items-center justify-center">
-                          <img
-                            src={a.img}
-                            alt={`${a.title} badge`}
-                            className="max-w-full max-h-full"
-                          />
-                        </div>
-                        <h3 className="text-lg font-bold">{a.title}</h3>
+        {/* How to earn (Accordion) */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">How to Earn Badges</h2>
+          <div className="space-y-4">
+            {ACCORDION.map((a) => {
+              const open = openId === a.id;
+              return (
+                <div key={a.id} className="border border-[#E5E7EB] rounded-lg">
+                  <button
+                    onClick={() => setOpenId(open ? null : a.id)}
+                    className="w-full flex items-center justify-between p-4 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4 text-left">
+                      <div className="w-16 h-16 flex items-center justify-center">
+                        <img src={a.img} alt={`${a.title} badge`} className="max-w-full max-h-full" />
                       </div>
-                      <ChevronDown
-                        className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                    <div
-                      className={`px-4 pb-4 overflow-hidden transition-[max-height] duration-300 ${
-                        open ? "max-h-96" : "max-h-0"
-                      }`}
-                    >
-                      <p className="text-[#6B7280]">{a.content}</p>
+                      <h3 className="text-lg font-bold">{a.title}</h3>
                     </div>
+                    <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`px-4 pb-4 overflow-hidden transition-[max-height] duration-300 ${open ? "max-h-96" : "max-h-0"}`}>
+                    <p className="text-[#6B7280]">{a.content}</p>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Progress (dynamic) */}
-          {error && (
-            <div className="max-w-3xl mx-auto mb-8 text-sm text-red-600">
-              Couldn’t load your progress. Please try again.
-            </div>
-          )}
-
-          {loading ? (
-            <div className="max-w-3xl mx-auto mb-16 animate-pulse">
-              <div className="h-6 w-64 bg-gray-200 rounded mb-3" />
-              <div className="h-2.5 w-full bg-gray-200 rounded" />
-              <div className="h-4 w-48 bg-gray-200 rounded mt-3" />
-            </div>
-          ) : (
-            <>
-              {progress?.helper && (
-                <ProgressBar
-                  label="Helper Badge Progress"
-                  value={progress.helper.value}
-                  total={progress.helper.total}
-                  unit="Sessions"
-                  suffix="Helper Badge"
-                />
-              )}
-              {progress?.starMentor && (
-                <ProgressBar
-                  label="Star Mentor Progress"
-                  value={progress.starMentor.value}
-                  total={progress.starMentor.total}
-                  unit="Students"
-                  suffix="Star Mentor"
-                />
-              )}
-              {progress?.knowledge && (
-                <ProgressBar
-                  label="Knowledge Seeker Progress"
-                  value={progress.knowledge.value}
-                  total={progress.knowledge.total}
-                  unit="Subjects"
-                  suffix="Knowledge Seeker"
-                />
-              )}
-            </>
-          )}
-
-          {/* Leaderboard */}
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-8">Leaderboard</h2>
-            <div className="overflow-x-auto border border-[#E5E7EB] rounded-lg shadow-sm">
-              <table className="w-full text-sm text-left text-[#6B7280]">
-                <thead className="text-xs text-[#111827] uppercase bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 font-bold">Rank</th>
-                    <th className="px-6 py-3 font-bold">Student</th>
-                    <th className="px-6 py-3 font-bold">Badges</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {LEADERBOARD.map((row) => (
-                    <tr key={row.rank} className="bg-white border-b last:border-b-0">
-                      <td className="px-6 py-4 font-bold text-lg text-[#111827]">{row.rank}</td>
-                      <td className="px-6 py-4 font-medium text-[#111827] whitespace-nowrap">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={row.avatar}
-                            alt={`${row.name} avatar`}
-                            className="w-10 h-10 rounded-full"
-                          />
-                          {row.name}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                          {row.badges.includes("explorer") && (
-                            <Compass className="h-4 w-4" title="Explorer" />
-                          )}
-                          {row.badges.includes("helper") && (
-                            <HelpingHand className="h-4 w-4" title="Helper" />
-                          )}
-                          {row.badges.includes("star-mentor") && (
-                            <Star className="h-4 w-4" title="Star Mentor" />
-                          )}
-                          {/* Example: if you add 'knowledge' to any row */}
-                          {row.badges.includes("knowledge") && (
-                            <BookOpen className="h-4 w-4" title="Knowledge Seeker" />
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="text-center mt-20">
-            <button
-              onClick={onCTA}
-              className="bg-[#111827] text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors text-lg inline-flex items-center gap-2"
-            >
-              <BookOpen className="h-5 w-5" />
-              Start earning your first badge today
-            </button>
+                </div>
+              );
+            })}
           </div>
         </div>
-      </main>
+
+        {/* Progress */}
+        {error && <div className="max-w-3xl mx-auto mb-8 text-sm text-red-600">Couldn’t load your progress. Please try again.</div>}
+        {loading ? (
+          <div className="max-w-3xl mx-auto mb-16 animate-pulse">
+            <div className="h-6 w-64 bg-gray-200 rounded mb-3" />
+            <div className="h-2.5 w-full bg-gray-200 rounded" />
+            <div className="h-4 w-48 bg-gray-200 rounded mt-3" />
+          </div>
+        ) : (
+          <>
+            {progress?.helper && (
+              <ProgressBar
+                label="Helper Badge Progress"
+                value={progress.helper.value}
+                total={progress.helper.total}
+                unit="Sessions"
+                suffix="Helper Badge"
+              />
+            )}
+            {progress?.starMentor && (
+              <ProgressBar
+                label="Star Mentor Progress"
+                value={progress.starMentor.value}
+                total={progress.starMentor.total}
+                unit="Students"
+                suffix="Star Mentor"
+              />
+            )}
+            {progress?.knowledge && (
+              <ProgressBar
+                label="Knowledge Seeker Progress"
+                value={progress.knowledge.value}
+                total={progress.knowledge.total}
+                unit="Subjects"
+                suffix="Knowledge Seeker"
+              />
+            )}
+          </>
+        )}
+
+        {/* Leaderboard */}
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8">Leaderboard</h2>
+          <div className="overflow-x-auto border border-[#E5E7EB] rounded-lg shadow-sm">
+            <table className="w-full text-sm text-left text-[#6B7280]">
+              <thead className="text-xs text-[#111827] uppercase bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 font-bold">Rank</th>
+                  <th className="px-6 py-3 font-bold">Student</th>
+                  <th className="px-6 py-3 font-bold">Badges</th>
+                </tr>
+              </thead>
+              <tbody>
+                {LEADERBOARD.map((row) => (
+                  <tr key={row.rank} className="bg-white border-b last:border-b-0">
+                    <td className="px-6 py-4 font-bold text-lg text-[#111827]">{row.rank}</td>
+                    <td className="px-6 py-4 font-medium text-[#111827] whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <img src={row.avatar} alt={`${row.name} avatar`} className="w-10 h-10 rounded-full" />
+                        {row.name}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        {row.badges.includes("explorer") && <Compass className="h-4 w-4" title="Explorer" />}
+                        {row.badges.includes("helper") && <HelpingHand className="h-4 w-4" title="Helper" />}
+                        {row.badges.includes("star-mentor") && <Star className="h-4 w-4" title="Star Mentor" />}
+                        {row.badges.includes("knowledge") && <BookOpen className="h-4 w-4" title="Knowledge Seeker" />}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-20">
+          <button
+            onClick={onCTA}
+            className="bg-[#111827] text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors text-lg inline-flex items-center gap-2"
+          >
+            <BookOpen className="h-5 w-5" />
+            Start earning your first badge today
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

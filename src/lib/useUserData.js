@@ -1,27 +1,60 @@
-// src/lib/useUserData.js
 import { useEffect, useMemo, useState } from "react";
 
-/**
- * Replace these with your API calls later.
- * sessions: [{ id, subject, role: "student"|"tutor", start, end, rating? }]
- */
-const SEED_SESSIONS = [
-  { id: "s1", subject: "Calculus II", role: "student", start: "2025-10-10T15:00:00", end: "2025-10-10T16:00:00", rating: 5 },
-  { id: "s2", subject: "World History", role: "student", start: "2025-10-11T17:00:00", end: "2025-10-11T18:00:00", rating: 5 },
-  { id: "s3", subject: "Physics", role: "student", start: "2025-10-12T10:00:00", end: "2025-10-12T11:00:00", rating: 4 },
-];
+// Generate demo sessions relative to today
+function generateSeedSessions() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
+  const inTwoDays = new Date(now);
+  inTwoDays.setDate(now.getDate() + 2);
+  const inThreeDays = new Date(now);
+  inThreeDays.setDate(now.getDate() + 3);
+
+  return [
+    {
+      id: "s1",
+      subject: "Calculus II",
+      role: "student",
+      start: tomorrow.toISOString(),
+      end: new Date(tomorrow.getTime() + 3600000).toISOString(), // +1h
+      rating: 5,
+    },
+    {
+      id: "s2",
+      subject: "World History",
+      role: "student",
+      start: inTwoDays.toISOString(),
+      end: new Date(inTwoDays.getTime() + 3600000).toISOString(),
+      rating: 5,
+    },
+    {
+      id: "s3",
+      subject: "Physics",
+      role: "student",
+      start: inThreeDays.toISOString(),
+      end: new Date(inThreeDays.getTime() + 3600000).toISOString(),
+      rating: 4,
+    },
+  ];
+}
 
 export function useUserData(userId = "demo-user") {
   const [loading, setLoading] = useState(true);
   const [sessions, setSessions] = useState([]);
   const [error, setError] = useState(null);
+  const [plan, setPlan] = useState("Free"); 
 
-  // simulate fetch
   useEffect(() => {
     setLoading(true);
     const t = setTimeout(() => {
-      setSessions(SEED_SESSIONS);
-      setLoading(false);
+      try {
+        setSessions(generateSeedSessions());
+        setError(null);
+      } catch (err) {
+        setError(err.message || "Failed to load sessions");
+      } finally {
+        setLoading(false);
+      }
     }, 150);
     return () => clearTimeout(t);
   }, [userId]);
@@ -29,15 +62,13 @@ export function useUserData(userId = "demo-user") {
   const stats = useMemo(() => {
     const completed = sessions.length;
     const fiveStarCount = sessions.filter((s) => s.rating === 5).length;
-
-    // distinct subjects attended/tutored
     const subjects = Array.from(new Set(sessions.map((s) => s.subject)));
 
     return { completed, fiveStarCount, subjectsCount: subjects.length };
   }, [sessions]);
 
-  // call this after booking a session to push progress locally (until you wire API)
-  const addMockSession = (session) => setSessions((prev) => [session, ...prev]);
+  const addMockSession = (session) =>
+    setSessions((prev) => [session, ...prev]);
 
-  return { loading, error, sessions, stats, addMockSession };
+  return { loading, error, sessions, stats, addMockSession,plan, setPlan };
 }

@@ -2,10 +2,10 @@
 import { ShieldCheck, Sparkles, Handshake } from "lucide-react";
 
 const TEAM = [
-  { name: "Riya Sharma", role: "Product Lead" },
-  { name: "Ethan Walker", role: "Full-Stack Engineer" },
-  { name: "Sofia Bennett", role: "ML Engineer" },
-  { name: "Liam Harper", role: "Design" },
+  { name: "Sanskar jaiswal", role: "Member 1" },
+  { name: "Krishna Tyagi", role: "Member 2" },
+  { name: "Vansh Verma", role: "Member 3" },
+  { name: "Mannspace", role: "Our Team Name" },
 ];
 
 export default function About() {
@@ -58,23 +58,23 @@ export default function About() {
           <ol className="relative border-l border-[#E5E7EB] pl-6 space-y-6">
             <li>
               <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-black" />
-              <div className="font-medium">2023 — Idea</div>
+              <div className="font-medium">HACK FORGE — Problem Statement</div>
               <p className="text-sm text-[#6B7280]">
-                Noticed students struggling to find timely, affordable help.
+                Resonated with the problem statement to help students get affordable help.
               </p>
             </li>
             <li>
               <div className="absolute -left-[9px] top-[68px] h-4 w-4 rounded-full bg-black" />
-              <div className="font-medium">2024 — Prototype</div>
+              <div className="font-medium"> Overnight Prototype</div>
               <p className="text-sm text-[#6B7280]">
-                Built the first AI-assisted matching and session summaries.
+                Built the first AI-assisted matching and full project MVP.
               </p>
             </li>
             <li>
               <div className="absolute -left-[9px] top-[136px] h-4 w-4 rounded-full bg-black" />
-              <div className="font-medium">Today — Community</div>
+              <div className="font-medium">Future plans </div>
               <p className="text-sm text-[#6B7280]">
-                Thousands of sessions, growing library of shared notes & flashcards.
+                To get funded to scale and actually make an impact in the society.
               </p>
             </li>
           </ol>

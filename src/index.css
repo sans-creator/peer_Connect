@@ -18,3 +18,27 @@
   .section { @apply py-16; }
   .muted { @apply text-muted; }
 }
+
+/* index.css additions */
+.card {
+  @apply rounded-lg border border-[#E5E7EB] bg-white shadow-sm;
+}
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-md bg-black px-4 py-2 text-white font-semibold hover:bg-black/90 disabled:opacity-50;
+}
+.muted {
+  @apply text-[#6B7280];
+}
+/* smooth marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee var(--speed, 24s) linear infinite;
+  width: max-content;
+}
+
+/* helpful delays for pulses */
+.delay-150 { animation-delay: .15s; }
+.delay-300 { animation-delay: .30s; }

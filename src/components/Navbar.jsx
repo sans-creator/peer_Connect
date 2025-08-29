@@ -28,7 +28,7 @@ export default function Navbar() {
           </SignedOut>
 
           <SignedIn>
-            <UserButton />
+            <UserButton afterSignOutUrl="/"/>
           </SignedIn>
 
           <button className="md:hidden p-2"><Menu className="h-6 w-6" /></button>
