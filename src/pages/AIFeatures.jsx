@@ -1,8 +1,9 @@
 // src/pages/AIFeatures.jsx
 import { UsersRound, FileText, Bot, Medal } from "lucide-react";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Cal, { getCalApi } from "@calcom/embed-react";
 
 /** Optional mini-demo that calls Gemini when VITE_GEMINI_API_KEY is set */
 function FlashcardDemo() {
@@ -61,9 +62,7 @@ function FlashcardDemo() {
   return (
     <div className="card p-6">
       <h3 className="text-lg font-bold text-[#111827]">Try: Summarize → Flashcards</h3>
-      <p className="muted mb-3 text-sm">
-        Paste a short session summary. 
-      </p>
+      <p className="muted mb-3 text-sm">Paste a short session summary. </p>
       <textarea
         className="w-full rounded-md border border-[#E5E7EB] p-3 text-sm outline-none focus:ring-2 focus:ring-black"
         rows={5}
@@ -86,7 +85,9 @@ function FlashcardDemo() {
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {cards.map((c, i) => (
             <div key={i} className="rounded-lg border border-[#E5E7EB] bg-white p-4">
-              <div className="text-sm font-semibold">Q{i + 1}. {c.q}</div>
+              <div className="text-sm font-semibold">
+                Q{i + 1}. {c.q}
+              </div>
               <div className="mt-1 text-sm text-[#6B7280]">A. {c.a}</div>
             </div>
           ))}
@@ -99,12 +100,20 @@ function FlashcardDemo() {
 export default function AIFeatures() {
   const navigate = useNavigate();
 
+  // Cal.com embed setup (theme/branding)
+  useEffect(() => {
+    (async () => {
+      const cal = await getCalApi({ namespace: "peer-scheduler" });
+      cal("ui", {
+        theme: "light",
+        styles: { branding: { brandColor: "#111827" } },
+      });
+    })();
+  }, []);
+
   // Navigate to FindTutor with auto match. You can prefill subject/level here.
   const goToAutoMatch = () => {
-    navigate(
-      `/find-tutor?subject=Calculus&level=College&auto=1`
-      // date/time omitted on purpose — FindTutor will default to next full hour in auto mode
-    );
+    navigate(`/find-tutor?subject=Calculus&level=College&auto=1`);
   };
 
   return (
@@ -140,9 +149,7 @@ export default function AIFeatures() {
                 <FileText className="h-6 w-6" />
               </div>
               <h3 className="text-lg font-bold text-[#111827]">Session Summaries &amp; Flashcards</h3>
-              <p className="mt-2 text-sm text-[#6B7280]">
-                Auto-generate notes and flashcards after sessions.
-              </p>
+              <p className="mt-2 text-sm text-[#6B7280]">Auto-generate notes and flashcards after sessions.</p>
             </div>
 
             <div className="flex flex-col items-center text-center">
@@ -150,9 +157,7 @@ export default function AIFeatures() {
                 <Bot className="h-6 w-6" />
               </div>
               <h3 className="text-lg font-bold text-[#111827]">AI Chat Assistant</h3>
-              <p className="mt-2 text-sm text-[#6B7280]">
-                24/7 fallback tutor for instant answers.
-              </p>
+              <p className="mt-2 text-sm text-[#6B7280]">24/7 fallback tutor for instant answers.</p>
             </div>
 
             <div className="flex flex-col items-center text-center">
@@ -175,7 +180,7 @@ export default function AIFeatures() {
             See AI in Action
           </h2>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
             <FlashcardDemo />
 
             <div className="card p-6 flex flex-col items-center justify-center text-center">
@@ -187,6 +192,39 @@ export default function AIFeatures() {
                 Try AI-Powered Tutoring
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SCHEDULER (Cal.com) */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-center text-3xl font-bold tracking-tight text-[#111827]">
+            Book a 15-minute Meeting
+          </h2>
+
+          <div className="rounded-lg border border-[#E5E7EB] bg-white p-4 shadow-sm">
+            {/* Inline Cal.com embed */}
+            <Cal
+              namespace="peer-scheduler"
+              calLink="krishna-tyagi-l4uqgk/15min"
+              style={{ width: "100%", height: "700px", border: "0" }}
+              config={{ layout: "month_view" }}
+            />
+
+            {/* Fallback link */}
+            <p className="mt-3 text-center text-sm text-[#6B7280]">
+              If the embed doesn’t load, open{" "}
+              <a
+                href="https://cal.com/krishna-tyagi-l4uqgk/15min"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-[#111827] underline"
+              >
+                this scheduling link
+              </a>
+              .
+            </p>
           </div>
         </div>
       </section>

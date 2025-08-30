@@ -85,21 +85,21 @@ const ACCORDION = [
 const LEADERBOARD = [
   {
     rank: 1,
-    name: "Sophia Clark",
+    name: "Sanskar",
     avatar:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCa5YtJ5qlUhnY742BLxj-Tm0eYsGkdWeHIkDcX_A8pLzhQgnkPPt9BGml-ho-f6ISxhrLlZuSRjWugBss2-qXiMxr4juHhbJnwk7lR3-djqSt5akrI1p-pwGrRHFIJo-XKn7fG4zCA7Uk0dfHrj3nTIbc0qJryDIXP_nGJQd5i-_JOJWPsSZFb2kabUaeK_AV2hkmfzW1nDDpAfOlgUHRoFsA7z1MsIxYe1g0w-AUEdv4CPLWX-OCwZiGz_6nkxMx8bX_z_-PxQtTr",
     badges: ["explorer", "helper"],
   },
   {
     rank: 2,
-    name: "Ethan Miller",
+    name: "Vansh",
     avatar:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCp0Sxo7Sqx94fedZ8gSVI3yMeXii_84dgahfitkC0d7AdgjdTa8nBJko_GNgEFjMVe-oAe9J1cxsnQakVzWCPuFQ-cYIEw0sWswBhmXvLoynwhfZYPDNL6spF4rKgkZlwWPzFTcI6QNwWPeh43tHQIoQbfEFBKLS6qLz0WEscP-_9GHQTdTLCEsW3tpUKlUkOe4-sjyVS6Q-8ij0q_SsfTH7CWJ9i83Hf9MO6OYfEgSCQbCcLGc9Wvh14MiYYPIEfezObzhS_BpS9g",
     badges: ["explorer", "helper"],
   },
   {
     rank: 3,
-    name: "Olivia Davis",
+    name: "Krishna",
     avatar:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuACt1SNUT1rXKe3fddIVuvEYPAL8pGB_ZyBPHz7UdNGeeNKoSZSAXCKAhQ34nGHgUtG01HmUXQ9YESxYtr5C7uecKgzc81HPqPm_V1VKPb4iL7ITurjIQptFXNGDQ1MhRkpspsYsCEXnmufeSQ1K5B6zEy8sKfq262aRR3gEd3-sZry0gh6TYjB3gdaeLO5QbJQ4F3xWk-EZkjg_dPxrq-Q0f62Axl73dMa4eKv5eVQNA8PTH9sokyIoYO_srxY0veYh_27pcSk5M2P",
     badges: ["explorer"],
