@@ -96,7 +96,7 @@ export default function Landing() {
             <div className="mt-10 grid w-full max-w-3xl grid-cols-3 gap-3 rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
               <div className="flex items-center justify-center gap-2">
                 <UsersRound className="h-4 w-4" />
-                12k+ learners
+                1k+ learners
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Clock className="h-4 w-4" />
@@ -204,7 +204,7 @@ export default function Landing() {
               avatar={AV(
                 "AB6AXuCL0aUxbPiFcAS4EoOLc87PxYRVqmAZUgr4QD_QKKG8dk82ow3_62wNNuDgJMY-tWeVnclMBe_cMhlbQqtqXjlfkECDbLvwc70HSnI0cv3D0VwsvyUOe9ZA6g6h5D5So0yS7zOCy98NT0EMTH1Og2NMHnraaq3h0lVxb86_WcVs-GZCZcCiqOt-Qee24nOJNBt0tymOcjiMQ7NWywwz0ACV2ZvrS4DSo5vi4nHTOwZQJ9xXUT8pSb9Qa7uoXmeGkdKfVAveN6sxA0at"
               )}
-              name="Yash"
+              name="Sanskar J."
               quote="Built a strong peer network."
             />
           </div>
