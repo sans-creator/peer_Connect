@@ -31,7 +31,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-border pt-8 md:flex md:items-center md:justify-between">
-          <p className="text-sm muted">© {new Date().getFullYear()} PeerConnect. Made By MannSpace</p>
+          <p className="text-sm muted">© {new Date().getFullYear()} PeerConnect. Made By <a href="https://github.com/sans-creator/peer_Connect" >MannSpace</a></p>
           <div className="mt-4 flex gap-6 md:mt-0 text-muted">
             <a className="hover:text-brand" href="#"><Twitter className="h-6 w-6" /></a>
             <a className="hover:text-brand" href="#"><Facebook className="h-6 w-6" /></a>

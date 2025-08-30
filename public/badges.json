@@ -1,0 +1,14 @@
+{
+  "cards": [
+    { "id":"explorer","title":"Explorer","img":"...","desc":"First session","icon":"Compass" },
+    { "id":"helper","title":"Helper","img":"...","desc":"5 sessions","icon":"HelpingHand" },
+    { "id":"star-mentor","title":"Star Mentor","img":"...","desc":"10x 5★","icon":"Star" },
+    { "id":"premium","title":"Premium Member","img":"https://img.icons8.com/color/96/crown.png","desc":"Upgraded","icon":"Star" }
+  ],
+  "accordion": [
+    { "id":"a1","title":"Explorer","img":"...","content":"Sign up and complete your first session." },
+    { "id":"a2","title":"Helper","img":"...","content":"Complete 5 sessions." },
+    { "id":"a3","title":"Star Mentor","img":"...","content":"10 students rate you 5★." },
+    { "id":"a4","title":"Knowledge Seeker","img":"...","content":"Complete sessions in 3 subjects." }
+  ]
+}

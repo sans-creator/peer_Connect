@@ -175,7 +175,7 @@ export default function Dashboard() {
                 </h2>
                 <div className="grid grid-cols-3 gap-4">
                   <p className="text-sm text-gray-500">
-                    Coming soon: sync with /badges progress
+                    Coming soon: sync with 
                   </p>
                 </div>
               </section>

@@ -1,0 +1,5 @@
+[
+  { "rank":1, "name":"Sanskar", "avatar":"...", "badges":["explorer","helper"] },
+  { "rank":2, "name":"Vansh",   "avatar":"...", "badges":["explorer","helper"] },
+  { "rank":3, "name":"Krishna", "avatar":"...", "badges":["explorer"] }
+]
