@@ -128,7 +128,7 @@ This project is [MIT licensed](LICENSE).
 
 ## 🙌 Credits & Community
 
-Built by [sans-creator](https://github.com/sans-creator) and contributors  [krishna-tyagi](https://github.com/krishna-tyagi).<br>
+Built by [sans-creator](https://github.com/sans-creator) and contributors  [krishna-tyagi](https://github.com/krishna-tyagi).and [vansh7790](https://github.com/vansh7790)<br>
 Started at Hack Forge to help students everywhere learn smarter, faster, and more affordably—with the power of AI.<br>
 **Join our community and start connecting today!**
 
